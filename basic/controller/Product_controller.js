@@ -1,50 +1,56 @@
-exports.index=(req,res)=>{
-    res.json({
-        "status":"success",
-        "data":[
-            {"id":1,"name":"HP","price":45000},
-            {"id":2,"name":"Lenovo","price":45000},
-            {"id":3,"name":"Dell","price":45000}
-        ]
-    })
-}
+const Product = require("./../model/product");
 
-exports.show=(req,res)=>{
-    const id=req.params.id;
-    const name=req.params.name;
-    const price=req.params.price;
-    res.json({
-        "status":"success",
-        "data":{"id":id,"name":name,"price":price}
-    })
-}
+exports.index = async (req, res)=>{
 
-exports.store=(req,res)=>{
-    res.json({
-        "status":"success",
-        "data":{
-            "name":req.body.name,
-            "price":req.body.price,
-            "email":req.body.email,
-            "mobile":req.body.mobile
+    
+    try{ 
+            //console.log(req.query.name)
+            // retrive records from mongo
+            const products = await Product.find({"name":req.query.name});    
+            res.status(201).json(products);
+    
+          } catch (error) {
+            res.status(500).json({ error: error.message });
         }
-    })
-}
-
-exports.update=(req,res)=>{
-    res.json({
-        "status":"success",
-        "data":{"id":req.body.id,
-            "name":req.body.name,
-            "price":req.body.price
+    }
+    
+    exports.show = (req, res)=>{
+        res.send({
+            "success":true,
+            "data":{"name": "Neel","enrollment":"20125454","city": "Ribda"}
+        });
+    }
+    
+    exports.store = async (req, res)=>{
+        try{ 
+            console.log(req.body)
+    
+            const product = await Product.create(req.body)
+            res.status(201).json(product);
+          } catch (error) {
+            res.status(500).json({ error: error.message });
         }
-    })
-}
-
-exports.destroy=(req,res)=>{
-    res.json({
-        "status":"success",
-        "data":{"id":req.body.id
+    }
+    
+    exports.update = async (req, res)=>{
+        
+        try{ 
+            console.log(req.body)
+    
+            const product = await Product.findByIdAndUpdate(req.body.id,req.body,{ new: true })
+            res.status(201).json(product);
+          } catch (error) {
+            res.status(500).json({ error: error.message });
         }
-    })
-}
+    }
+    
+    exports.destroy = async (req, res)=>{
+        try{ 
+            console.log(req.body)
+    
+            const product = await Product.findByIdAndDelete(req.body.id)
+            res.status(201).json(product);
+          } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
