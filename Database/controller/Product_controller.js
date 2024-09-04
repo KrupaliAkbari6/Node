@@ -1,4 +1,4 @@
-const Product = require("./../model/product");
+const Product=require('./../model/Product');
 
 exports.index = async (req, res)=>{
 
@@ -6,20 +6,26 @@ exports.index = async (req, res)=>{
     try{ 
             //console.log(req.query.name)
             // retrive records from mongo
-            const products = await Product.find({"name":req.query.name});    
-            res.status(201).json(products);
+            const product = await Product.find({"name":req.query.name});    
+            res.status(201).json(product);
     
           } catch (error) {
             res.status(500).json({ error: error.message });
         }
     }
     
-    exports.show = (req, res)=>{
-        res.send({
-            "success":true,
-            "data":{"name": "Neel","enrollment":"20125454","city": "Ribda"}
-        });
-    }
+    exports.show = async (req, res) => {
+        try{ 
+            //console.log(req.query.name)
+            // retrive records from mongo
+            const product = await Product.find({"_id":req.params.id});    
+            res.status(201).json(product);
+    
+          } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    };
+
     
     exports.store = async (req, res)=>{
         try{ 

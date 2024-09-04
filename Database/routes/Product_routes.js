@@ -7,7 +7,7 @@ const productValidation=require('./../validation/Product_validator');
 router.get('/products',productController.index)
 
 //Show
-router.get('/products/:id/:name/:price',productController.show)
+router.get('/products/:id/',productController.show)
 
 //Store
 router.post('/products',productValidation.productCreate,productController.store)
